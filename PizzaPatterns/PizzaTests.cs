@@ -5,15 +5,21 @@ namespace PizzaPatterns
     public class PizzaTests
     {
         [Fact]
-        public void Can_create_pizza_the_hard_way()
+        public void Can_create_normal_pizza()
+        {
+            var pizza = CreatePizza();
+
+            AssertPizzaPartsAreOfType(pizza, "Normal");
+        }
+
+        private static Pizza CreatePizza()
         {
             var crust = new Crust { Type = "Normal" };
             var cheese = new Cheese { Type = "Normal" };
             var sauce = new Sauce { Type = "Normal" };
 
             var pizza = new Pizza(crust, cheese, sauce);
-
-            AssertPizzaPartsAreOfType(pizza, "Normal");
+            return pizza;
         }
 
         private static void AssertPizzaPartsAreOfType(Pizza pizza, string type)
