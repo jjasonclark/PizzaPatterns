@@ -7,12 +7,12 @@ namespace PizzaPatterns
         [Fact]
         public void Can_create_normal_pizza()
         {
-            var pizza = CreatePizza(new NormalPizzaPartFactory());
+            var pizza = CreatePizza(new LitePizzaPartFactory());
 
             AssertPizzaPartsAreOfType(pizza, "Normal");
         }
 
-        private static Pizza CreatePizza(NormalPizzaPartFactory factory)
+        private static Pizza CreatePizza(IPizzaPartFactory factory)
         {
             var crust = factory.CreateCrust();
             var cheese = factory.CreateCheese();
