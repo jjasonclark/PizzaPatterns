@@ -29,7 +29,32 @@ namespace PizzaPatterns
         }
     }
 
-    internal class NormalPizzaPartFactory
+    internal interface IPizzaPartFactory
+    {
+        Sauce CreateSauce();
+        Cheese CreateCheese();
+        Crust CreateCrust();
+    }
+
+    class LitePizzaPartFactory : IPizzaPartFactory
+    {
+        public Sauce CreateSauce()
+        {
+            return new Sauce { Type = "Lite" };
+        }
+
+        public Cheese CreateCheese()
+        {
+            return new Cheese { Type = "Lite" };
+        }
+
+        public Crust CreateCrust()
+        {
+            return new Crust { Type = "Lite" };
+        }
+    }
+
+    internal class NormalPizzaPartFactory : IPizzaPartFactory
     {
         public Sauce CreateSauce()
         {
