@@ -7,19 +7,18 @@ namespace PizzaPatterns
         [Fact]
         public void Can_create_normal_pizza()
         {
-            var pizza = CreatePizza();
+            var pizza = CreatePizza(new NormalPizzaPartFactory());
 
             AssertPizzaPartsAreOfType(pizza, "Normal");
         }
 
-        private static Pizza CreatePizza()
+        private static Pizza CreatePizza(NormalPizzaPartFactory factory)
         {
-            var crust = new Crust { Type = "Normal" };
-            var cheese = new Cheese { Type = "Normal" };
-            var sauce = new Sauce { Type = "Normal" };
+            var crust = factory.CreateCrust();
+            var cheese = factory.CreateCheese();
+            var sauce = factory.CreateSauce();
 
-            var pizza = new Pizza(crust, cheese, sauce);
-            return pizza;
+            return new Pizza(crust, cheese, sauce);
         }
 
         private static void AssertPizzaPartsAreOfType(Pizza pizza, string type)
@@ -27,6 +26,24 @@ namespace PizzaPatterns
             Assert.Equal(pizza.Crust.Type, type);
             Assert.Equal(pizza.Cheese.Type, type);
             Assert.Equal(pizza.Sauce.Type, type);
+        }
+    }
+
+    internal class NormalPizzaPartFactory
+    {
+        public Sauce CreateSauce()
+        {
+            return new Sauce { Type = "Normal" };
+        }
+
+        public Cheese CreateCheese()
+        {
+            return new Cheese { Type = "Normal" };
+        }
+
+        public Crust CreateCrust()
+        {
+            return new Crust { Type = "Normal" };
         }
     }
 }
