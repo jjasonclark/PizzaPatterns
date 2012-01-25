@@ -14,11 +14,13 @@ namespace PizzaPatterns
 
         private static Pizza CreatePizza(IPizzaPartFactory factory)
         {
-            var crust = factory.CreateCrust();
-            var cheese = factory.CreateCheese();
-            var sauce = factory.CreateSauce();
+            var builder = new PizzaBuilder(factory);
+            builder.AddCrust();
+            builder.AddCheese();
+            builder.AddSouce();
 
-            return new Pizza(crust, cheese, sauce);
+
+            return builder.GetPizza();
         }
 
         private static void AssertPizzaPartsAreOfType(Pizza pizza, string type)
@@ -26,6 +28,39 @@ namespace PizzaPatterns
             Assert.Equal(pizza.Crust.Type, type);
             Assert.Equal(pizza.Cheese.Type, type);
             Assert.Equal(pizza.Sauce.Type, type);
+        }
+    }
+
+    internal class PizzaBuilder
+    {
+        private readonly IPizzaPartFactory factory;
+        private Crust crust;
+        private Cheese cheese;
+        private Sauce sauce;
+
+        public PizzaBuilder(IPizzaPartFactory factory)
+        {
+            this.factory = factory;
+        }
+
+        public Pizza GetPizza()
+        {
+            return new Pizza(crust, cheese, sauce);
+        }
+
+        public void AddSouce()
+        {
+            sauce = factory.CreateSauce();
+        }
+
+        public void AddCheese()
+        {
+            cheese = factory.CreateCheese();
+        }
+
+        public void AddCrust()
+        {
+            crust = factory.CreateCrust();
         }
     }
 
