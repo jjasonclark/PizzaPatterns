@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Xunit;
 
 namespace PizzaPatterns
@@ -7,20 +8,21 @@ namespace PizzaPatterns
         [Fact]
         public void Can_create_normal_pizza()
         {
-            var pizza = CreatePizza(new LitePizzaPartFactory());
-
-            AssertPizzaPartsAreOfType(pizza, "Normal");
-        }
-
-        private static Pizza CreatePizza(IPizzaPartFactory factory)
-        {
-            var builder = new PizzaBuilder(factory);
+            var watch = new Stopwatch();
+            watch.Start();
+            var builder = new PizzaBuilder(new LitePizzaPartFactory());
             builder.AddCrust();
-            builder.AddCheese();
+            builder.AddCrust();
+            builder.AddCrust();
             builder.AddSouce();
+            builder.AddCheese();
+            builder.AddCheese();
 
+            var pizza = builder.GetPizza();
 
-            return builder.GetPizza();
+            watch.Stop();
+            AssertPizzaPartsAreOfType(pizza, "Lite");
+            System.Diagnostics.Debug.WriteLine("Got time of {0}", watch.Elapsed);
         }
 
         private static void AssertPizzaPartsAreOfType(Pizza pizza, string type)
@@ -73,6 +75,13 @@ namespace PizzaPatterns
 
     class LitePizzaPartFactory : IPizzaPartFactory
     {
+        private Flyweight flyweight;
+
+        public LitePizzaPartFactory()
+        {
+            flyweight = new Flyweight();
+        }
+
         public Sauce CreateSauce()
         {
             return new Sauce { Type = "Lite" };
@@ -85,7 +94,7 @@ namespace PizzaPatterns
 
         public Crust CreateCrust()
         {
-            return new Crust { Type = "Lite" };
+            return new LiteCrust(flyweight) { Type = "Lite" };
         }
     }
 
